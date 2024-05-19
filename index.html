@@ -8,22 +8,22 @@
 </head>
 <body>
     <div class="page">
-        <div class="section header">
+        <header>
             <h1>Comparando Algoritmos de Ordernação</h1>
-        </div>
-        <div class="section menu">
-            <ul class="menu-options">
-                <li><button onclick="shuffleArray()">Bagunçar vetor</button></li>
-                <li><button onclick="bubbleSort()">Bubble Sort</button></li>
-                <li><button onclick="selectionSort()">Selection Sort</button></li>
-                <li><button onclick="insertionSort()">Insertion Sort</button></li>
-                <li><button>Merge Sort</button></li>
-                <li><button>Quick Sort</button></li>
-            </ul>
-        </div>
-        <div class="section content">
-            <div class="sorting"></div>
-        </div>
+            <nav>
+                <ul class="options">
+                    <li><button onclick="shuffleArray()">Bagunçar vetor</button></li>
+                    <li><button onclick="bubbleSort()">Bubble Sort</button></li>
+                    <li><button onclick="selectionSort()">Selection Sort</button></li>
+                    <li><button onclick="insertionSort()">Insertion Sort</button></li>
+                    <li><button onclick="startQuickSort()">Quick Sort</button></li>
+                    <li><button>Merge Sort</button></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div class="bars-container"></div>
+        </main>
     </div>
     <script src="index.js"></script>
 </body>

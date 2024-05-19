@@ -49,19 +49,19 @@ function insertionSort(array) {
     }
 }
 
-function merge(arr, left, middle, right) {
+function merge(array, left, middle, right) {
     let leftSide = middle - left + 1;
     let rightSide = right - middle;
 
     let leftArray = new Array(leftSide);
     let rightArray = new Array(rightSide);
-    
+
     for (let i = 0; i < leftSide; i++) {
-        leftArray[i] = arr[left + i];
+        leftArray[i] = array[left + i];
     }
 
     for (let i = 0; i < rightSide; i++) {
-        rightArray[i] = arr[middle + 1 + i];
+        rightArray[i] = array[middle + 1 + i];
     }
 
     let i = 0;
@@ -70,57 +70,77 @@ function merge(arr, left, middle, right) {
         
     while (i < leftSide && j < rightSide) {
         if (leftArray[i] < rightArray[j]) {
-            arr[k] = leftArray[i];
-            ++i;
+            array[k] = leftArray[i];
+            i++;
         } else {
-            arr[k] = rightArray[j];
+            array[k] = rightArray[j];
             j++;
         }
         k++;
     }
 
     while (i < leftSide) {
-        arr[k] = leftArray[i];
+        array[k] = leftArray[i];
         i++;
         k++;
     }
 
     while (j < rightSide) {
-        arr[k] = rightArray[j];
+        array[k] = rightArray[j];
         j++;
         k++;
     }
 }
 
-function mergeSort(arr, left, right) {
+function mergeSort(array, left, right) {
     if (left >= right) {
         return;
     }
 
     let middle = left + parseInt((right - left) / 2);
 
-    mergeSort(arr, left, middle);
-    mergeSort(arr, middle + 1, right);
+    mergeSort(array, left, middle);
+    mergeSort(array, middle + 1, right);
 
-    merge(arr, left, middle, right);
+    merge(array, left, middle, right);
 }
 
-function quickSort(array) {
-    if (array.length < 2) {
-        return array;
-    }
+function partition(array, left, right) {
+    let pivot = array[left];
 
-    let pivot = array[0];
-    let leftArray = [];
-    let rightArray = [];
+    let i = left + 1;
+    let j = right;
 
-    for (let i = 1; i < array.length; i++) {
-        if (array[i] < pivot) {
-            leftArray.push(array[i]);
-        } else {
-            rightArray.push(array[i]);
+    while (i <= j) {
+        while (array[i] <= pivot) {
+            i++;
+        }
+
+        while (array[j] > pivot) {
+            j--;
+        }
+
+        if (i < j) {
+            let temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
     }
 
-    return [...quickSort(leftArray), pivot, ...quickSort(rightArray)];
+    let temp = array[left];
+    array[left] = array[j];
+    array[j] = temp;
+
+    return j;
+}
+
+function quickSort(array, start, end) {
+    if (start >= end) {
+        return;
+    }
+
+    let pivot = partition(array, start, end);
+
+    quickSort(array, start, pivot - 1);
+    quickSort(array, pivot + 1, end);
 }

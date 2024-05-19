@@ -8,40 +8,41 @@
 .page {
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
 }
 
-.section {
+header {
     width: 100%;
+    background-color: #006633;
+    color: #ffcc33;
+    text-align: center;
+}
+
+header > h1 {
+    text-align: center;
+    padding: 20px;
+}
+
+nav {
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-.header {
-    padding: 20px;
-    background-color: #006633;
-    color: #ffCC33;
-}
-
-.menu {
-    background-color: #DDEEDD;
+    background-color: #ddeedd;
     padding: 15px;
 }
 
-.menu-options {
+.options {
+    width: 70%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
 }
 
-.menu-options li {
+.options li {
     display: block;
-    margin-right: 30px;
-    cursor: pointer;
+    margin-right: 20px;
 }
 
-.menu-options li:last-of-type {
+.options li:last-of-type {
     margin-right: 0;
 }
 
@@ -50,25 +51,29 @@ button {
     font-weight: bold;
     padding: 5px;
     border-radius: 5px;
+    font-size: 12px;
 }
 
-.content {
+main {
     margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
-.sorting {
+.bars-container {
     height: 400px;
     border: 1px solid black;
     display: flex;
-    justify-content: flex-start;
     align-items: flex-end;
 }
 
-.rectangle {
+.vertical-bar {
     margin-right: 2px;
     background-color: red;
     color: black;
-    width: 18px;
+    width: 15px;
+
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -76,15 +81,23 @@ button {
     position: relative;
 }
 
-.rectangle > span {
+.vertical-bar > span {
     position: absolute;
     bottom: -20px;
 }
 
-.sorting > div:last-of-type {
+.bars-container > div:last-of-type {
     margin-right: 0;
 }
 
 .green {
     background-color: lime;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.blue {
+    background-color: blue;
 }

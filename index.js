@@ -1,3 +1,5 @@
+const BARS_CONTAINER_DIV = ".bars-container";
+
 function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
@@ -14,21 +16,21 @@ function range(start, end) {
 
 function drawRectangles() {
     let array = range(1, 51);
-    let canvas = document.querySelector(".sorting");
-    canvas.innerHTML = '';
+    let barsContainer = document.querySelector(BARS_CONTAINER_DIV);
+    barsContainer.innerHTML = '';
 
     for (let i = 0; i < array.length; i++) {
         let rectangleDiv = document.createElement("div");
-        rectangleDiv.classList.add("rectangle");
+        rectangleDiv.classList.add("vertical-bar");
         rectangleDiv.style.height = `${2 * array[i]}%`;
         rectangleDiv.innerHTML = `<span>${i + 1}</span>`;
-        canvas.appendChild(rectangleDiv);
+        barsContainer.appendChild(rectangleDiv);
     }
 }
 
 function shuffleArray() {
     // Fisher-Yates Shuffle
-    let array = document.querySelector(".sorting").children;
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
 
     for (let i = array.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -45,7 +47,7 @@ function shuffleArray() {
 }
 
 async function bubbleSort() {
-    let array = document.querySelector(".sorting").children;
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
 
     sorted = false;
 
@@ -77,7 +79,7 @@ async function bubbleSort() {
 }
 
 async function selectionSort() {
-    let array = document.querySelector(".sorting").children;
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
 
     for (let i = 0; i < array.length; i++) {
         let argMin = i;
@@ -107,7 +109,7 @@ async function selectionSort() {
 }
 
 async function insertionSort() {
-    let array = document.querySelector(".sorting").children;
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
 
     for (let i = 1; i < array.length; i++) {
         let j = i;
@@ -139,6 +141,112 @@ async function insertionSort() {
         }
         
     }
+}
+
+async function partition(left, right) {
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
+
+    for (let i = 0; i < left; i++) {
+        array[i].style.opacity = "0.2";
+    }
+
+    for (let i = right + 1; i < array.length; i++) {
+        array[i].style.opacity = "0.2";
+    }
+
+    let pivotElement = array[left];
+    pivotElement.classList.add("blue");
+
+    let pivotValue = parseInt(pivotElement.innerText);
+
+    let i = left + 1;
+    let j = right;
+
+    while (i <= j) {
+        array[i].classList.add("yellow");
+        array[j].classList.add("green");
+
+        while (i <= right) {
+            let elem = array[i];
+            let elemValue = parseInt(elem.innerText);
+            elem.classList.add("yellow");
+
+            await sleep(200);
+
+            if (elemValue <= pivotValue) {
+                elem.classList.remove("yellow");
+                i++;
+            } else {
+                break;
+            }
+        }
+
+        while (j >= left) {
+            let elem = array[j];
+            let elemValue = parseInt(elem.innerText);
+            elem.classList.add("green");
+
+            await sleep(200);
+
+            if (elemValue > pivotValue) {
+                elem.classList.remove("green");
+                j--;
+            } else {
+                break;
+            }
+        }
+
+        array[i].classList.remove("yellow");
+        array[j].classList.remove("green");
+
+        if (i < j) {
+            let temp = document.createElement("div");
+            let elemI = array[i];
+            let elemJ = array[j];
+
+            elemI.parentNode.insertBefore(temp, elemI);
+            elemJ.parentNode.insertBefore(elemI, elemJ);
+            temp.parentNode.insertBefore(elemJ, temp);
+            temp.parentNode.removeChild(temp);
+        }
+    }
+
+    let temp = document.createElement("div");
+    let elemLeft = array[left];
+    let elemJ = array[j];
+
+    elemLeft.parentNode.insertBefore(temp, elemLeft);
+    elemJ.parentNode.insertBefore(elemLeft, elemJ);
+    temp.parentNode.insertBefore(elemJ, temp);
+    temp.parentNode.removeChild(temp);
+
+    for (let i = 0; i < left; i++) {
+        array[i].style.opacity = "1.0";
+    }
+
+    for (let i = right + 1; i < array.length; i++) {
+        array[i].style.opacity = "1.0";
+    }
+
+    pivotElement.classList.remove("blue");
+
+    return j;
+}
+
+async function quickSort(start, end) {
+    if (start >= end) {
+        return;
+    }
+
+    let pivot = await partition(start, end);
+
+    await quickSort(start, pivot - 1);
+    await quickSort(pivot + 1, end);
+}
+
+async function startQuickSort() {
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
+    await quickSort(0, array.length - 1);
 }
 
 window.onload = function() {
