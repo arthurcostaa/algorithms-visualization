@@ -101,3 +101,8 @@ main {
 .blue {
     background-color: blue;
 }
+
+.hidden {
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+}

@@ -147,11 +147,11 @@ async function partition(left, right) {
     let array = document.querySelector(BARS_CONTAINER_DIV).children;
 
     for (let i = 0; i < left; i++) {
-        array[i].style.opacity = "0.2";
+        array[i].classList.add("hidden");
     }
 
     for (let i = right + 1; i < array.length; i++) {
-        array[i].style.opacity = "0.2";
+        array[i].classList.add("hidden");
     }
 
     let pivotElement = array[left];
@@ -196,8 +196,8 @@ async function partition(left, right) {
             }
         }
 
-        array[i].classList.remove("yellow");
-        array[j].classList.remove("green");
+        array[i < array.length ? i : i - 1].classList.remove("yellow");
+        array[j < array.length ? j : j - 1].classList.remove("green");
 
         if (i < j) {
             let temp = document.createElement("div");
@@ -221,11 +221,11 @@ async function partition(left, right) {
     temp.parentNode.removeChild(temp);
 
     for (let i = 0; i < left; i++) {
-        array[i].style.opacity = "1.0";
+        array[i].classList.remove("hidden");
     }
 
     for (let i = right + 1; i < array.length; i++) {
-        array[i].style.opacity = "1.0";
+        array[i].classList.remove("hidden");
     }
 
     pivotElement.classList.remove("blue");
@@ -247,6 +247,114 @@ async function quickSort(start, end) {
 async function startQuickSort() {
     let array = document.querySelector(BARS_CONTAINER_DIV).children;
     await quickSort(0, array.length - 1);
+}
+
+async function merge(left, middle, right) {
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
+
+    for (let i = 0; i < left; i++) {
+        array[i].classList.add("hidden");
+    }
+
+    for (let i = right + 1; i < array.length; i++) {
+        array[i].classList.add("hidden");
+    }
+
+    let leftSide = middle - left + 1;
+    let rightSide = right - middle;
+
+    let leftArray = new Array(leftSide);
+    let rightArray = new Array(rightSide);
+
+    for (let i = 0; i < leftSide; i++) {
+        leftArray[i] = array[left + i];
+    }
+
+    for (let i = 0; i < rightSide; i++) {
+        rightArray[i] = array[middle + 1 + i];
+    }
+
+    let i = 0;
+    let j = 0;
+    let k = left;
+
+    while (i < leftSide && j < rightSide) {
+        let leftElem = leftArray[i];
+        let rightElem = rightArray[j];
+
+        leftElem.classList.add("blue");
+        rightElem.classList.add("blue");
+        await sleep(300);
+        leftElem.classList.remove("blue");
+        rightElem.classList.remove("blue");
+
+        let leftValue = parseInt(leftElem.innerText);
+        let rightValue = parseInt(rightElem.innerText);
+
+        if (leftValue <= rightValue) {
+            array[k].parentNode.insertBefore(leftElem, array[k]);
+            i++;
+        } else {
+            array[k].parentNode.insertBefore(rightElem, array[k]);
+            j++;
+        }
+
+        k++;
+
+        await sleep(500);
+    }
+
+    while (i < leftSide) {
+        leftElem = leftArray[i];
+
+        leftElem.classList.add("blue");
+        await sleep(300);
+        leftElem.classList.remove("blue");
+
+        array[k].parentNode.insertBefore(leftElem, array[k]);
+        i++;
+        k++;
+    }
+
+    while (j < rightSide) {
+        rightElem = rightArray[j];
+
+        rightElem.classList.add("blue");
+        await sleep(300);
+        rightElem.classList.remove("blue");
+
+        array[k].parentNode.insertBefore(rightElem, array[k]);
+        j++;
+        k++;
+    }
+
+    await sleep(300);
+
+    for (let i = 0; i < left; i++) {
+        array[i].classList.remove("hidden");
+    }
+
+    for (let i = right + 1; i < array.length; i++) {
+        array[i].classList.remove("hidden");
+    }
+}
+
+async function mergeSort(left, right) {
+    if (left >= right) {
+        return;
+    }
+
+    let middle = left + parseInt((right - left) / 2);
+
+    await mergeSort(left, middle);
+    await mergeSort(middle + 1, right);
+
+    await merge(left, middle, right);
+}
+
+async function startMergeSort() {
+    let array = document.querySelector(BARS_CONTAINER_DIV).children;
+    await mergeSort(0, array.length - 1);
 }
 
 window.onload = function() {
